@@ -1,0 +1,1 @@
+add_library(zziduo_object OBJECT thread_pool.cc)
