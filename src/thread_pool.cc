@@ -30,7 +30,7 @@ void thread_pool::start(size_type __thread_num)
   _M_threads.reserve(__thread_num);
   for (size_type i = 0; i < __thread_num; ++i)
   {
-    _M_threads.emplace_back(new thread(run));
+    _M_threads.emplace_back(new thread(&thread_pool::run, this));
   }
   if (__thread_num == 0 && _M_init)
   {
