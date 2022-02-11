@@ -1,17 +1,21 @@
 #!/bin/bash
 
-rm -rf output
-rm -rf build
+export ZZIDUO_DIR=$(pwd)
 
-mkdir output
-mkdir build
+log_file=${ZZIDUO_DIR}/$(date "+%H:%M:%S@%Y-%m-%d").log
 
-gcc -c src/a.c -o output/a.c.o -fPIC
-ar -rcs output/liba.a output/a.c.o
+set -e
 
-gcc -c src/b.c -o output/b.c.o -fPIC
-ar -rcs output/libb.a output/b.c.o
+main(){
+	[ ! -d ${ZZIDUO_DIR}/output ] || rm -rf ${ZZIDUO_DIR}/output
+	[ ! -d ${ZZIDUO_DIR}/build ] || rm -rf ${ZZIDUO_DIR}/build
 
-cd build
-cmake ..
-make
+	mkdir ${ZZIDUO_DIR}/output
+	mkdir ${ZZIDUO_DIR}/build
+
+	cd ${ZZIDUO_DIR}/build
+	cmake ${ZZIDUO_DIR}
+	make
+}
+
+main $* 2>&1 | tee ${log_file}
