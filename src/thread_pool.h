@@ -17,16 +17,17 @@ namespace zziduo
 class thread_pool
 {
 public:
-  typedef std::function<void ()>  callable_type; // todo
-  typedef std::mutex              mutex_type;
-  typedef std::condition_variable condition_type;
+  using callable_type = std::function<void ()>; // todo
 
-  typedef std::unique_ptr<std::thread>    unique_thread_type;
-  typedef std::vector<unique_thread_type> vector_thread_type;
-  typedef std::deque<callable_type>       deque_callable_type;
+  using mutex_type      = std::mutex;
+  using condition_type  = std::condition_variable;
 
-  typedef std::size_t size_type;
-  typedef std::string name_type;
+  using unique_thread_type  = std::unique_ptr<std::thread>;
+  using vector_thread_type  = std::vector<unique_thread_type>;
+  using deque_callable_type = std::deque<callable_type>;
+
+  using size_type = std::size_t;
+  using name_type = std::string;
 
 private:
   mutable mutex_type  _M_mutex;
@@ -47,7 +48,7 @@ public:
   ~thread_pool();
 
   thread_pool(const thread_pool&) = delete;
-  thread_pool& operator=(const thread_pool&&) = delete;
+  void operator=(const thread_pool&) = delete;
 
 	void set_init(const callable_type& __init) { _M_init = __init; }
 

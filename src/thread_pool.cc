@@ -25,7 +25,6 @@ thread_pool::~thread_pool()
 
 void thread_pool::start(size_type __thread_num)
 {
-  assert(_M_threads.empty());
   _M_running = true;
   _M_threads.reserve(__thread_num);
   for (size_type i = 0; i < __thread_num; ++i)
@@ -40,16 +39,10 @@ void thread_pool::start(size_type __thread_num)
 
 void thread_pool::stop()
 {
-  {
-    unique_lock<mutex_type> lk(_M_mutex);
-    _M_running = false;
-    _M_not_empty.notify_all();
-    _M_not_full.notify_all();
-  }
-  for (auto& thr : _M_threads)
-  {
-    thr->join();
-  }
+  unique_lock<mutex_type> lk(_M_mutex);
+  _M_running = false;
+  _M_not_empty.notify_all();
+  _M_not_full.notify_all();
 }
 
 thread_pool::size_type thread_pool::size() const
